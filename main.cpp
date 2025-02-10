@@ -2,40 +2,49 @@
 #include <limits>
 
 int main() {
-    int number;
+  int number;
 
-    while (true) {
-        std::cout << "Enter an integer: ";
+  while (true) {
+    std::cout << "Enter an integer: ";
+    try {
+      if (std::cin.peek() == ' ' || std::cin.peek() == '\n') {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        throw std::runtime_error("Incorrect input! Please enter a number "
+                                 "without a floating point or space.");
+      }
 
-        try {
-            std::cin >> number;
+      std::cin >> number;
 
-            if (!std::cin) {
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                throw std::runtime_error("Incorrect input! Please enter a number, not a letter.");
-            }
+      if (!std::cin) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        throw std::runtime_error(
+            "Incorrect input! Please enter a number, not a letter.");
+      }
 
-            if (std::cin.peek() != '\n') {
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                throw std::runtime_error("Incorrect input! Please enter a number without a floating point or space.");
-            }
+      if (std::cin.peek() != '\n') {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        throw std::runtime_error("Incorrect input! Please enter a number "
+                                 "without a floating point or space.");
+      }
 
-            if (number <= 0) {
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                throw std::runtime_error("Incorrect input! Please enter a positive number.");
-            }
+      if (number <= 0) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        throw std::runtime_error(
+            "Incorrect input! Please enter a positive number.");
+      }
 
-            break;
+      break;
 
-        } catch (const std::runtime_error& ex) {
-            std::cerr << ex.what() << std::endl;
-        }
+    } catch (const std::runtime_error &ex) {
+      std::cerr << ex.what() << std::endl;
     }
+  }
 
-    std::cout << "You have entered a number: " << number << std::endl;
+  std::cout << "You have entered a number: " << number << std::endl;
 
-    return 0;
+  return 0;
 }
